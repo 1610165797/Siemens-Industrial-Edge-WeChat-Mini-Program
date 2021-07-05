@@ -1,0 +1,9 @@
+<!--pages/subscribe/subscribe.wxml-->
+<view>
+  <view class="sub">
+    <view>
+      Subscribe to Message:
+    </view>
+    <switch class="tui-fr" checked="{{subscribed}}" bindchange="reqeustSubscribeMessage"/>
+  </view>
+</view>

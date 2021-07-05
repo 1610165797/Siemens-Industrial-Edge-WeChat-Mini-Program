@@ -1,0 +1,68 @@
+/**index.wxss**/
+.page{
+  overflow-x:hidden;
+}
+#lazy-mychart-dom {
+  position: absolute;
+  top: 0;
+  bottom: 60%;
+  left: 0;
+  right: 0;
+}
+.input{
+  border-radius: 20rpx;
+  text-align: center;
+  border:10rpx solid #009999;
+  width:500rpx
+}
+.values{
+  margin-top: 120rpx;
+  height:300rpx;
+  width:750rpx
+}
+.values_button{
+  display: flex;
+  flex-direction: row;
+  height:350rpx
+}
+.mini-btn{
+  margin-top:90rpx
+}
+.texts{
+  margin-left:10rpx;
+}
+.input_button{
+  margin-top:20rpx;
+  display:flex;
+  flex-direction: row;
+}
+.confirm{
+  margin-top:120rpx;
+  margin-right:30rpx
+}
+
+.bts{
+  margin-top:20rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.picker_border{
+  margin-top:rpx;
+  margin-left:40rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  border:10rpx solid #009999;
+  width:300rpx;
+}
+.picker{
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.description{
+  margin-top:10rpx;
+}
+
+

@@ -1,0 +1,48 @@
+<view class="page" wx:if="{{true}}">
+
+  <view class="container">
+    <ec-canvas id="lazy-mychart-dom" canvas-id="lazy-mychart" ec="{{ lazyEc }}" force-use-old-canvas="true"> </ec-canvas> <!-- 最后一项在发布时去掉  -->
+  </view>
+
+  <view class="values_button">
+  <view class='values'>
+    <view class="value">
+      <text class="texts" selectable="{{true}}">Start: {{start}}\n</text>
+      <input class="input" type="number" bindinput='getStartTime' maxlength="19" placeholder="Enter Start Time" />
+    </view>
+    <view class="value">
+      <text class="texts" selectable="{{true}}">End: {{end}}\n</text>
+      <input class="input" type="number" bindinput='getEndTime' maxlength="19" placeholder="Enter End Time" />
+    </view>
+  </view>
+  
+  <view class="confirm">
+    <button bindtap="confirm" class="mini-btn" type="primary" size="mini">Confirm</button>
+  </view>
+  </view>
+
+  <view class="description">
+    <text class="texts">Time Duration: {{(end-start)/1000000000}} s\n</text>
+    <text class="texts">Data Points: {{counter}}\n</text>
+    <text class="texts">Ideal Sampling Frequency: {{ideal_frq}} Hz\n</text>
+    <text class="texts">Real Sampling Frequency: {{real_frq}} Hz </text>
+  </view>
+
+  <view class="bts">
+      <button type="primary" bindtap="decrease_minute">Prev Minute</button>
+      <button type="primary" bindtap="increase_minute">Next Minute</button>
+  </view>
+  <view class="picker">
+  <view class="texts">
+    Switch Chart:
+  </view>
+  <view class="picker_border">
+    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+      <view wx:if="{{index<0}}">N/A</view>
+          <view wx:else>
+            {{array[index]}}
+          </view>
+    </picker>
+  </view>
+  </view>
+</view>

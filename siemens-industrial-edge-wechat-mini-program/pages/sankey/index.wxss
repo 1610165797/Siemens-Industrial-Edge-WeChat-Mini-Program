@@ -1,0 +1,61 @@
+/* pages/sankey/index.wxss*/
+.page{
+  overflow-x:hidden;
+}
+
+.chart{
+  height:1000rpx;
+  width:800rpx;
+  overflow-x: scroll;
+}
+
+#lazy-mychart-dom{
+  position:absolute;
+  right:0;
+  top:0;
+  bottom:0;
+  left:0;
+  width:850rpx;
+}
+.slider{
+  margin-top:0rpx;
+}
+.slider_name{
+  display:flex;
+  justify-content:center;
+}
+
+.pickers{
+  display:flex;
+  flex-direction:row;
+  margin-top:20rpx;
+}
+.texts{
+  margin-left: 10rpx;
+}
+
+.byDuration{
+  display:flex;
+  flex-direction: row;
+  margin-left:10rpx;
+  margin-top:20rpx
+
+}
+.picker{
+  text-align: center;
+  border:10rpx solid #009999;
+  border-radius: 20rpx;
+  width:320rpx;
+  margin-left: 20rpx;
+}
+
+.byDayAndMonth{
+  display:flex;
+  flex-direction: row;
+  margin-left:10rpx;
+  margin-top:20rpx
+}
+
+.out{
+  margin-left:20rpx
+}

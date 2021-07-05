@@ -1,0 +1,6 @@
+/* pages/subscribe/subscribe.wxss */
+.sub{
+  margin-top:600rpx;
+  justify-content: center;
+  display:flex
+}

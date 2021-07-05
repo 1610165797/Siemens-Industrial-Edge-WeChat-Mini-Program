@@ -1,0 +1,48 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/subscribe/subscribe",
+    "pages/line/index",
+    "pages/sankey/index",
+    "pages/gantt/index",
+    "pages/my/my"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#009999",
+    "navigationBarTitleText": "Siemens Industrial Edge",
+    "navigationBarTextStyle":"black",
+    "enablePullDownRefresh" : true
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath":"icon/_main.png",
+        "selectedIconPath": "icon/main.png",
+        "text": "Main"
+      },
+      {
+        "pagePath": "pages/line/index",
+        "iconPath":"icon/_graph.png",
+        "selectedIconPath": "icon/graph.png",
+        "text": "Chart"
+      },
+      {
+        "pagePath": "pages/subscribe/subscribe",
+        "iconPath":"icon/_save.png",
+        "selectedIconPath": "icon/save.png",
+        "text": "Subscribe"
+      },
+   
+      {
+        "pagePath": "pages/my/my",
+        "iconPath":"icon/_my.png",
+        "selectedIconPath": "icon/my.png",
+        "text": "Mine"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

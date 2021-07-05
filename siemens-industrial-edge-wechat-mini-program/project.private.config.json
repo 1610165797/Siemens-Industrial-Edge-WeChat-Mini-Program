@@ -1,0 +1,42 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/line/index",
+          "pathName": "pages/line/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/sankey/index",
+          "pathName": "pages/sankey/index",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/subscribe/subscribe",
+          "pathName": "pages/subscribe/subscribe",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/index/index",
+          "pathName": "pages/index/index",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
+}
