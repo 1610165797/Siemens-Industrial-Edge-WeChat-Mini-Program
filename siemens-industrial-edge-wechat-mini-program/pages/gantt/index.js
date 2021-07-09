@@ -36,13 +36,13 @@ Page({
   line_set:function(chart){
     Date.prototype.Format = function (fmt) {
       let o = {
-          "M+": this.getMonth() + 1, //month
-          "d+": this.getDate(), //day
-          "H+": this.getHours(), //hour
-          "m+": this.getMinutes(), //Minute
-          "s+": this.getSeconds(), //second
-          "q+": Math.floor((this.getMonth() + 3) / 3), //quarter
-          "S": this.getMilliseconds() //millisecond
+          "M+": this.getMonth() + 1,
+          "d+": this.getDate(),
+          "H+": this.getHours(), 
+          "m+": this.getMinutes(),
+          "s+": this.getSeconds(),
+          "q+": Math.floor((this.getMonth() + 3) / 3),
+          "S": this.getMilliseconds()
       };
       if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
       for (let k in o)
