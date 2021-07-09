@@ -35,6 +35,12 @@
           "pathName": "pages/index/index",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/gantt/index",
+          "pathName": "pages/gantt/index",
+          "query": "",
+          "scene": null
         }
       ]
     }

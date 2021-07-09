@@ -1,3 +1,8 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "ec-canvas": "../../ec-canvas/ec-canvas"
+  },
+  "navigationBarTitleText": "Chart",
+  "navigationBarTextStyle":"black",
+  "enablePullDownRefresh": true
 }
