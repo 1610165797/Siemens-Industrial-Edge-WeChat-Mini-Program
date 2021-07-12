@@ -3,6 +3,12 @@ const db = wx.cloud.database("siemens-3g29njpzec51b925")
 const _=db.command
 Page({
   data:{
+      actual:[
+        new Date("2021/07/20"),
+        new Date("2021/07/15"),
+        new Date("2021/07/14"),
+        new Date("2021/07/05"),
+  ]
   },
   onLoad:function(options){
       this.fetchData()
@@ -34,171 +40,136 @@ Page({
   })
   },
   line_set:function(chart){
-    Date.prototype.Format = function (fmt) {
-      let o = {
-          "M+": this.getMonth() + 1,
-          "d+": this.getDate(),
-          "H+": this.getHours(), 
-          "m+": this.getMinutes(),
-          "s+": this.getSeconds(),
-          "q+": Math.floor((this.getMonth() + 3) / 3),
-          "S": this.getMilliseconds()
-      };
-      if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-      for (let k in o)
-          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-      return fmt;
-  };
-    var option={
-      title: {
-          text: "",
-          x: "center"
-      },
-      tooltip: {
-          trigger: "axis",
-          axisPointer: {
-              type: "shadow"
-          },
-          extraCssText:"",
-          formatter: function (params) {
-              let relVal = params[0].axisValueLabel;
-              const getDateStr=(hideBar,dataBar)=>{
-                  let str='';
-                  str+=new Date(new Date().getTime() + (86400000) * hideBar.value).Format("yyyy-M-d")+" to "+new Date(new Date().getTime() + (86400000) * (hideBar.value+dataBar.value)).Format("yyyy-M-d");
-                  return str;
-              }
-              relVal+="Scheme:"+getDateStr(params[0],params[1])+" Actual:"+getDateStr(params[2],params[3]);
-              return relVal;
-          }
+  var option={
+    title:
+      {
+          text: "Gantt Chart"
       },
       legend: {
-          data: ["plan", "actual"],
-          x: 30
+          data: ['Actual',"Scheduled",""],
+          x:200
       },
-      toolbox: {
-          show: true,
-          feature: {
-              mark: true,
-              dataView: {readOnly: false},
-              restore: true,
-              saveAsImage: true
-          }
-      },
-      grid: {
-          left: "1%",
-          right: "5%",
-          bottom: "0%",
-          containLabel: true
-      },
-      yAxis: {
-          type: "category",
-          splitLine: {show: false},
-          data: ["Spring", "Bolt", "Rubber", "Lub", "Screw"]
+      grid:{
+        top: '10%',
+        left: '2%',
+        right: '2%',
+        bottom: '15%',
+        containLabel: true
       },
       xAxis: {
-          type: "value",
-          boundaryGap: [0, 0.01],
-          axisLabel: {
-              show: true,
-              interval: 0,
-              formatter: function (value) {
-                  return new Date(new Date().getTime() + (86400000) * value).Format("MM-dd")
-              }
-          }
+        type: 'time',
+        position: "top",
+        min:function(value)
+        {
+            var date = new Date(value.min);
+            var min = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + "1"
+            return min
+        },
+        max:function(value)
+        {
+            var date = new Date(value.min);
+            var days = new Date(date.getFullYear(),date.getMonth()+1, 0).getDate();
+            var max=date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + days
+            return max
+        }
       },
-      series: [
-          {
-              name: "planDate",
-              type: "bar",
-              stack: "plan",
-              barCategoryGap: "30%",
-              itemStyle: {
-                  normal: {
-                      borderColor: "rgba(0,0,0,0)",
-                      color: "rgba(0,0,0,0)"
-                  },
-                  emphasis: {
-                      borderColor: "rgba(0,0,0,0)",
-                      color: "rgba(0,0,0,0)"
+      yAxis: {
+        type: "category",
+        data: ['Beta Test', 'Alpha Test', 'Development', 'Design'],
+      },
+      tooltip: {
+          trigger: 'axis',
+          position:["10%","80%"],
+          formatter: function(params) {
+              var res=""
+              var date0 = params[0].data;
+              var date1 = params[1].data;
+              var date2 = params[2].data;
+              date0 = date0.getFullYear() + "-" + (date0.getMonth() + 1) + "-" + date0.getDate();
+              date1 = date1.getFullYear() + "-" + (date1.getMonth() + 1) + "-" + date1.getDate();
+              date2 = date2.getFullYear() + "-" + (date2.getMonth() + 1) + "-" + date2.getDate();
+              res += " "+params[0].seriesName + ": " + date0
+              res += " "+params[1].seriesName + ": " + date1
+              res += " "+params[2].seriesName + ": " + date2
+              console.log(params[0]);
+              return res;
+        }
+    },
+    series: [
+        {
+            name: 'Scheduled',
+            type: 'bar',
+            stack: 'overlap',
+            barGap:'-100%',
+            data:[
+                new Date("2021/07/31"),
+                new Date("2021/07/25"),
+                new Date("2021/07/15"),
+                new Date("2021/07/07"),
+            ],
+            itemStyle: {
+                normal: {
+                    color: '#0f0',
+                    barBorderColor: '#FFFFFF',
+                    barBorderWidth: 0,
+                    barBorderRadius:0,
+                    label : {
+                    show: true,
+                    position: 'top'
+                }
+            }
+        }
+    },
+        {
+            name: 'Actual',
+            type: 'bar',
+            stack: 'overlap',
+            data:[
+                new Date("2021/07/28"),
+                new Date("2021/07/20"),
+                new Date("2021/07/14"),
+                new Date("2021/07/05"),
+            ],
+          itemStyle: {
+            normal: {
+                      color:'#0000ff',
+                      barBorderColor:'#FFFFFF',
+                      barBorderWidth:0,
+                      barBorderRadius:0,
+                      label:
+                      {
+                        show: true,
+                        position: 'top'
+                      }
+                    }
                   }
-              },
-              data: this.data.start
-          },
-          {
-              name: "plan",
-              type: "bar",
-              stack: "plan",
-              itemStyle: {
-                  normal: {
-                      label: {
-                          show: true,
-                          position: "right",
-                          textStyle: {
-                              fontSize:14
-                          },
-                           formatter: function (obj) {
-                              return obj.value;
-                          }
-                      },
-                      color: "#c23531"
-                  }
-              },
-              data: this.data.plan
-          },
-          {
-              name: "factDate",
-              type: "bar",
-              stack: "fact",
-              itemStyle: {
-                  normal: {
-                      borderColor: "rgba(0,0,0,0)",
-                      color: "rgba(0,0,0,0)"
-                  },
-                  emphasis: {
-                      borderColor: "rgba(0,0,0,0)",
-                      color: "rgba(0,0,0,0)"
-                  }
-              },
-              data: this.data.start
-          },
-          {
-              name: "actual",
-              type: "bar",
-              stack: "fact",
-              itemStyle: {
-                  normal: {
-                      label: {
-                          show: true,
-                          position: "right",
-                          textStyle: {
-                              fontSize: 14
-                          },
-                          formatter: function (obj) {
-                              return obj.value;
-                          }
-                      },
-                      color: "#91c7ae"
-                  }
-              },
-              data: this.data.actual
-          }, {
-              type: "bar",
-              stack: "none",
-              barWidth: "2",
-              itemStyle: {
-                  normal: {
-                      borderColor: "rgba(0,0,0,0)",
-                      color: "rgba(0,0,0,0)"
-                  },
-                  emphasis: {
-                      borderColor: "rgba(0,0,0,0)",
-                      color: "rgba(0,0,0,0)"
-                  }
-              },
-              data: [0, 0, 0, 0, 0]
-          }
-      ]
-  }
+            },
+        {
+            name:'',
+            type:'bar',
+            stack:'overlap',
+            barCategoryGap:"0%",
+            data: [
+                new Date("2021/07/25"),
+                new Date("2021/07/15"),
+                new Date("2021/07/07"),
+                new Date("2021/07/01"),
+            ],
+            itemStyle: {
+                normal: {
+                            color: '#fff',
+                            barBorderColor: '#FFFFFF',
+                            barBorderWidth: 0,
+                            barBorderRadius:0,
+                            label : {
+                            show: true,
+                            position: 'top'
+                    }
+                }
+            }
+        }
+    ]
+};
   chart.setOption(option);
   },
   fetchData:function(){

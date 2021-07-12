@@ -2,7 +2,7 @@
 #lazy-mychart-dom {
   position: absolute;
   top: 0;
-  bottom: 50%;
+  bottom: 60%;
   left: 0;
   right: 0;
 }
