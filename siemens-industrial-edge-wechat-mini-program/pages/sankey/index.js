@@ -9,10 +9,10 @@ Page({
     lazyEc:{
       lazyLoad:true
     },
-    byDay:"By Day",
-    byMonth:"By Month",
-    start:"Start",
-    end:"End",
+    byDay:"Enter Date",
+    byMonth:"Enter Month",
+    start:"Enter Start",
+    end:"Enter End",
     default:true,
     raw:[],
     list:[],
@@ -171,24 +171,32 @@ Page({
           }
       ]
   };
-  chart.setOption(option);
-  if((this.data.index!=-1)&&!this.data.default)
-  {
-    chart.dispatchAction({
-        type:"highlight",
-        seriesIndex:0,
-        dataIndex:this.data.index,
-      });
-  }
+  wx.hideLoading({
+    success: (res) => {
+      chart.setOption(option);
+      if((this.data.index!=-1)&&!this.data.default)
+      {
+        chart.dispatchAction({
+            type:"highlight",
+            seriesIndex:0,
+            dataIndex:this.data.index,
+          });
+      }
+    },
+  })
+ 
   },
   byDay:function(e){
+    wx.showLoading({
+      title: 'loading...',
+    })
     var that=this
     this.setData({
       raw:[],
       byDay:e.detail.value,
-      byMonth:"By Month",
-      start:"Start",
-      end:"End"
+      byMonth:"Enter Month",
+      start:"Enter Start",
+      end:" Enter End"
     })
     var gmt = new Date(e.detail.value.split(' ').join('T'))
     var local=gmt.getTime()/1000+gmt.getTimezoneOffset()*60
@@ -200,13 +208,16 @@ Page({
     }, 2000);
   },
   byMonth:function(e){
+    wx.showLoading({
+      title: 'loading...',
+    })
     var that=this
     this.setData({
       raw:[],
-      byDay:"By Day",
+      byDay:"Enter Day",
       byMonth:e.detail.value,
-      start:"Start",
-      end:"End"
+      start:"Enter Start",
+      end:"Enter End"
     })
     var gmt = new Date(e.detail.value.split(' ').join('T'))
     var local=gmt.getTime()/1000+gmt.getTimezoneOffset()*60
@@ -220,34 +231,63 @@ Page({
     }, 2000);
   },
   start:function(e){
+    var that=this
     this.setData({
       raw:[],
-      byDay:"By Day",
-      byMonth:"By Month",
+      byDay:"Enter Day",
+      byMonth:"Enter Month",
       start:e.detail.value,
-      end:"End"
     })
+    if(this.data.end=="Enter End")
+    {
+    }
+    else
+    {
+      wx.showLoading({
+        title: 'loading...',
+      })
+      var start= new Date(this.data.start.split(' ').join('T'))
+      var end= new Date(this.data.end.split(' ').join('T'))
+      var local_start=start.getTime()/1000+start.getTimezoneOffset()*60
+      var local_end=end.getTime()/1000+end.getTimezoneOffset()*60
+      var days=(local_end-local_start)/(3600*24)
+      this.getList(db,_,0,days+1,local_start,local_end,this.getList)
+        setTimeout(function(){
+          that.updateLinks()
+          that.initVariables()
+          that.getOption()
+        }, 2000);
+    }
   },
   end:function(e){
+    var that=this
     this.setData({
       raw:[],
-      byDay:"By Day",
-      byMonth:"By Month",
+      byDay:"Enter Day",
+      byMonth:"Enter Month",
       end:e.detail.value
     })
-    var that=this
-    var gmt = new Date(this.data.start.split(' ').join('T'))
-    var local=gmt.getTime()/1000+gmt.getTimezoneOffset()*60
-    var temp=local
-    var gmt = new Date(e.detail.value.split(' ').join('T'))
-    var local=gmt.getTime()/1000+gmt.getTimezoneOffset()*60
-    var days=(local-temp)/(3600*24)
-    this.getList(db,_,0,days+1,temp,local+24*3600,this.getList)
-      setTimeout(function(){
-        that.updateLinks()
-        that.initVariables()
-        that.getOption()
-      }, 2000);
+    if(this.data.start=="Enter Start")
+    {
+    }
+    else
+    {
+      wx.showLoading({
+        title: 'loading...',
+      })
+      var start= new Date(this.data.start.split(' ').join('T'))
+      var end= new Date(this.data.end.split(' ').join('T'))
+      var local_start=start.getTime()/1000+start.getTimezoneOffset()*60
+      var local_end=end.getTime()/1000+end.getTimezoneOffset()*60
+      var days=(local_end-local_start)/(3600*24)
+      this.getList(db,_,0,days+1,local_start,local_end,this.getList)
+        setTimeout(function(){
+          that.updateLinks()
+          that.initVariables()
+          that.getOption()
+        }, 2000);
+    }
+   
   },
   getList:function(db,_,skip,count,start,end,callback){
     var that=this
@@ -291,7 +331,6 @@ Page({
         if(i==1)
         {
           temp[j]=this.data.raw[i].value[j].value
-          console.log(this.data.raw[i].value[j].value)
         }
         else
         {

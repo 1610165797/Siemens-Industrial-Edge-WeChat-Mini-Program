@@ -3,12 +3,6 @@ const db = wx.cloud.database("siemens-3g29njpzec51b925")
 const _=db.command
 Page({
   data:{
-      actual:[
-        new Date("2021/07/20"),
-        new Date("2021/07/15"),
-        new Date("2021/07/14"),
-        new Date("2021/07/05"),
-  ]
   },
   onLoad:function(options){
       this.fetchData()
@@ -59,6 +53,13 @@ Page({
       xAxis: {
         type: 'time',
         position: "top",
+        axisLabel: {
+          show: false,
+           textStyle:{
+             color: '#000000',
+             fontSize : 15
+           }
+        },
         min:function(value)
         {
             var date = new Date(value.min);
@@ -75,7 +76,14 @@ Page({
       },
       yAxis: {
         type: "category",
-        data: ['Beta Test', 'Alpha Test', 'Development', 'Design'],
+        data: ['Beta Test', 'Alpha Test', 'Dev.', 'Design'],
+        axisLabel: {
+          show: true,
+           textStyle:{
+             color: '#000000',
+             fontSize : 15
+           }
+        },
       },
       tooltip: {
           trigger: 'axis',
@@ -99,30 +107,31 @@ Page({
         {
             name: 'Scheduled',
             type: 'bar',
-            stack: 'overlap',
-            barGap:'-100%',
+            stack: 'overlapp',
+            barGap:'-40%',
             data:[
                 new Date("2021/07/31"),
                 new Date("2021/07/25"),
                 new Date("2021/07/15"),
-                new Date("2021/07/07"),
-            ],
+                new Date("2021/07/07")
+              ],
             itemStyle: {
                 normal: {
                     color: '#0f0',
                     barBorderColor: '#FFFFFF',
                     barBorderWidth: 0,
                     barBorderRadius:0,
-                    label : {
-                    show: true,
-                    position: 'top'
-                }
+                    label:{
+                      show: true,
+                      position: 'top'
+                    }
             }
         }
     },
         {
             name: 'Actual',
             type: 'bar',
+            barCategoryGap:"0%",
             stack: 'overlap',
             data:[
                 new Date("2021/07/28"),
@@ -132,7 +141,7 @@ Page({
             ],
           itemStyle: {
             normal: {
-                      color:'#0000ff',
+              color: 'rgba(153,50,204,.4)',
                       barBorderColor:'#FFFFFF',
                       barBorderWidth:0,
                       barBorderRadius:0,
@@ -148,7 +157,7 @@ Page({
             name:'',
             type:'bar',
             stack:'overlap',
-            barCategoryGap:"0%",
+           
             data: [
                 new Date("2021/07/25"),
                 new Date("2021/07/15"),
@@ -159,7 +168,7 @@ Page({
                 normal: {
                             color: '#fff',
                             barBorderColor: '#FFFFFF',
-                            barBorderWidth: 0,
+                            barBorderWidth: 2,
                             barBorderRadius:0,
                             label : {
                             show: true,
@@ -167,7 +176,31 @@ Page({
                     }
                 }
             }
-        }
+        },
+        {
+          name:'',
+          type:'bar',
+          stack:'overlapp',
+         
+          data: [
+              new Date("2021/07/25"),
+              new Date("2021/07/15"),
+              new Date("2021/07/07"),
+              new Date("2021/07/01"),
+          ],
+          itemStyle: {
+              normal: {
+                          color: '#fff',
+                          barBorderColor: '#FFFFFF',
+                          barBorderWidth: 2,
+                          barBorderRadius:0,
+                          label : {
+                          show: true,
+                          position: 'top'
+                  }
+              }
+          }
+      }
     ]
 };
   chart.setOption(option);

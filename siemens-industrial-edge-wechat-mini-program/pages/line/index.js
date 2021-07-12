@@ -55,8 +55,8 @@ getEndTime:function(e)
 confirm:function()
 {
   this.setData({
-    start:this.data.temp_start,
-    end:this.data.temp_end
+    start:parseInt(this.data.temp_start),
+    end:parseInt(this.data.temp_end)
   })
   this.fetchData()
 },
@@ -141,6 +141,7 @@ fetchData:function(){
   this.getListCount(db,_).then(res =>{
     let count = res
     let extract={}
+    console.log(res)
     that.setData({
       counter:count,
       real_frq:(count/(this.data.end-this.data.start)*1000000000).toFixed(3)
