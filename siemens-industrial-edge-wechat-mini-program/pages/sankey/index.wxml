@@ -1,24 +1,6 @@
 <view class="page">
-  <scroll-view class="chart" scroll-x bindscroll='scrollCanvas'>
-    
-      <ec-canvas id="lazy-mychart-dom" canvas-id="lazy-mychart" ec="{{lazyEc}}" force-use-old-canvas="true"> </ec-canvas> <!-- 最后一项在发布时去掉  -->
-    
-  </scroll-view>
-
-  <view class="pickers">
-    <view class="texts">
-      Highlight Node:
-    </view>
-    <view class="picker">
-      <picker bindchange="bindNodeChange" value="{{index}}" range="{{nodes}}">
-        <view wx:if="{{index<0}}">
-          N/A
-        </view>
-        <view wx:else>
-          {{nodes[index]}}
-        </view>
-      </picker>
-    </view>
+  <view class="chart">
+      <ec-canvas id="lazy-mychart-dom" canvas-id="lazy-mychart" ec="{{lazyEc}}" force-use-old-canvas="true"> </ec-canvas>
   </view>
 
   <view class="byDayAndMonth">
@@ -34,11 +16,7 @@
         </picker>
     </view>
   </view>
-
-
-    <view class='texts'>
-      By Duration
-    </view>
+  
   <view class="byDuration">
     <view class="picker">
         <picker bindchange="start" value="{{start}}" mode="date" start="2021-01-01" end="{{end}}">
@@ -52,6 +30,17 @@
     </view>
   </view>
 
-
+  <view class="pickers">
+    <view class="search">
+      <picker bindchange="bindNodeChange" value="{{index}}" range="{{nodes}}">
+        <view wx:if="{{index<0}}">
+        Search Node
+        </view>
+        <view wx:else>
+          {{nodes[index]}}
+        </view>
+      </picker>
+    </view>
+  </view>
 
 </view>

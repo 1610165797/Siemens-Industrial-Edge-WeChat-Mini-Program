@@ -1,9 +1,21 @@
-<!--pages/subscribe/subscribe.wxml-->
 <view>
-  <view class="sub">
-    <view>
-      Subscribe to Message:
-    </view>
-    <switch class="tui-fr" checked="{{subscribed}}" bindchange="reqeustSubscribeMessage"/>
+  <view class='contentBottom'>
+  <view class='BottomFirst'>
+   <text id='0' data-id='0'>Subscription List</text>
   </view>
+  <swiper class="tab-right" vertical="true" circular="true" duration="500" display-multiple-items='9'>
+  <checkbox-group class="right-item" bindchange="toggle" >
+    <block wx:for-index="idx" wx:for='{{list}}'>
+      <swiper-item class="temp">
+        <view class='content-item'>
+          <text class='name'>{{item.name}}</text>
+          <label class="checkbox">
+            <checkbox value="{{item.name}}" checked="{{item.state}}"/>
+          </label>
+      </view>
+     </swiper-item>
+    </block> 
+  </checkbox-group>
+  </swiper>
+ </view>
 </view>

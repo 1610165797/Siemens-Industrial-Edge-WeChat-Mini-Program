@@ -3,19 +3,12 @@
   overflow-x:hidden;
 }
 
-.chart{
-  height:1000rpx;
-  width:800rpx;
-  overflow-x: scroll;
-}
-
 #lazy-mychart-dom{
   position:absolute;
   right:0;
   top:0;
-  bottom:0;
+  bottom:30%;
   left:0;
-  width:850rpx;
 }
 .slider{
   margin-top:0rpx;
@@ -27,8 +20,8 @@
 
 .pickers{
   display:flex;
-  flex-direction:row;
-  margin-top:20rpx;
+  align-items: center;
+  margin-top:50rpx;
 }
 .texts{
   margin-left: 10rpx;
@@ -38,7 +31,7 @@
   display:flex;
   flex-direction: row;
   margin-left:10rpx;
-  margin-top:20rpx
+  margin-top:50rpx
 
 }
 .picker{
@@ -47,13 +40,23 @@
   border-radius: 20rpx;
   width:320rpx;
   margin-left: 20rpx;
+  align-items: center;
+}
+
+.search{
+  text-align: center;
+  border:10rpx solid #009999;
+  border-radius: 20rpx;
+  width:320rpx;
+  margin-left: 200rpx;
+  justify-content: center;
 }
 
 .byDayAndMonth{
   display:flex;
   flex-direction: row;
   margin-left:10rpx;
-  margin-top:20rpx
+  margin-top:900rpx
 }
 
 .out{

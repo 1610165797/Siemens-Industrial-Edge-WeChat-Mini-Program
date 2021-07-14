@@ -1,7 +1,4 @@
-// pages/sankey/index.js
 import * as echarts from '../../ec-canvas/echarts'
-
-
 const db = wx.cloud.database("siemens-3g29njpzec51b925")
 const _=db.command
 Page({
@@ -9,10 +6,10 @@ Page({
     lazyEc:{
       lazyLoad:true
     },
-    byDay:"Enter Date",
-    byMonth:"Enter Month",
-    start:"Enter Start",
-    end:"Enter End",
+    byDay:"Pick Date",
+    byMonth:"Pick Month",
+    start:"Pick Start Date",
+    end:"Pick End Date",
     default:true,
     raw:[],
     list:[],
@@ -20,40 +17,21 @@ Page({
     index:-1,
     nodes:[],
     emphasis:-1,
-    links:[{
-      source: 'Nuclear',
-      target: 'Thermal',
-      value: 5
-  }, {
-      source: 'Nuclear',
-      target: 'Industry',
-      value: 3
-  }, {
-      source: 'Wind',
-      target: 'Electric Grid',
-      value: 8
-  }, {
-      source: 'Nuclear',
-      target: 'Electric Grid',
-      value: 3
-  }, {
-      source: 'Wind',
-      target: 'Thermal',
-      value: 1
-  }, {
-      source: 'Electric Grid',
-      target: 'Losses',
-      value: 2
-  },
-  {
-      source: 'Electric Grid',
-      target: 'Mining',
-      value: 4
-  }]
+    links:[]
   },
   onLoad: function (options){
-    this.initVariables();
-    this.getOption();
+    var that=this
+    wx.showLoading({
+      title: 'loading...',
+    })
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+    today = yyyy + '-' + mm + '-' + dd;
+    var gmt = new Date(today.split(' ').join('T'))
+    var local=gmt.getTime()/1000+gmt.getTimezoneOffset()*60
+    this.getList(db,_,0,1,local,local+24*3600,this.getList)
   },
   onPullDownRefresh: function(){
     var that=this
@@ -62,8 +40,7 @@ Page({
       wx.stopPullDownRefresh({
         success: (res)=>{
           that.setData({
-            index:-1,
-            default:true
+            index:-1
           })
         },
       })
@@ -142,10 +119,10 @@ Page({
     })
     this.getOption()
   },
-  line_set:function(chart, xdata, ydata) {
+  line_set:function(chart, xdata, ydata){
     var option = {
       title: {
-          text: 'Sankey Chart'
+          text: 'Energy Flow Chart'
       },
       tooltip: {
           trigger: 'item',
@@ -154,10 +131,10 @@ Page({
       series: [
           { animation:false,
             draggable:false,
-            top:"5%",
+            top:"6%",
             left:"2%",
-            right:"25%",
-            bottom: '10%',
+            right:"15%",
+            bottom: '2%',
               type: 'sankey',
               data:xdata,
               links:ydata,
@@ -171,20 +148,15 @@ Page({
           }
       ]
   };
-  wx.hideLoading({
-    success: (res) => {
-      chart.setOption(option);
-      if((this.data.index!=-1)&&!this.data.default)
-      {
-        chart.dispatchAction({
-            type:"highlight",
-            seriesIndex:0,
-            dataIndex:this.data.index,
-          });
-      }
-    },
-  })
- 
+  chart.setOption(option);
+  if((this.data.index!=-1)&&!this.data.default)
+  {
+    chart.dispatchAction({
+        type:"highlight",
+        seriesIndex:0,
+        dataIndex:this.data.index,
+      });
+  }
   },
   byDay:function(e){
     wx.showLoading({
@@ -194,18 +166,14 @@ Page({
     this.setData({
       raw:[],
       byDay:e.detail.value,
-      byMonth:"Enter Month",
-      start:"Enter Start",
-      end:" Enter End"
+      byMonth:"Pick Month",
+      start:"Pick Start Date",
+      end:"Pick End Date",
+      index:-1
     })
     var gmt = new Date(e.detail.value.split(' ').join('T'))
     var local=gmt.getTime()/1000+gmt.getTimezoneOffset()*60
     this.getList(db,_,0,1,local,local+24*3600,this.getList)
-    setTimeout(function(){
-      that.updateLinks()
-      that.initVariables()
-      that.getOption()
-    }, 2000);
   },
   byMonth:function(e){
     wx.showLoading({
@@ -214,31 +182,28 @@ Page({
     var that=this
     this.setData({
       raw:[],
-      byDay:"Enter Day",
+      byDay:"Pick Day",
       byMonth:e.detail.value,
-      start:"Enter Start",
-      end:"Enter End"
+      start:"Pick Start Date",
+      end:"Pick End Date",
+      index:-1
     })
     var gmt = new Date(e.detail.value.split(' ').join('T'))
     var local=gmt.getTime()/1000+gmt.getTimezoneOffset()*60
     var my=e.detail.value.split("-")
     var days=new Date(my[0],my[1],0).getDate()
-    this.getList(db,_,0,days,local,local+days*24*3600,this.getList)
-    setTimeout(function(){
-      that.updateLinks()
-      that.initVariables()
-      that.getOption()
-    }, 2000);
+    this.getList(db,_,0,days,local,local+days*24*3600,this.getList,[])
   },
   start:function(e){
     var that=this
     this.setData({
       raw:[],
-      byDay:"Enter Day",
-      byMonth:"Enter Month",
+      byDay:"Pick Date",
+      byMonth:"Pick Month",
       start:e.detail.value,
+      index:-1
     })
-    if(this.data.end=="Enter End")
+    if(this.data.end=="Pick End Date")
     {
     }
     else
@@ -252,22 +217,18 @@ Page({
       var local_end=end.getTime()/1000+end.getTimezoneOffset()*60
       var days=(local_end-local_start)/(3600*24)
       this.getList(db,_,0,days+1,local_start,local_end,this.getList)
-        setTimeout(function(){
-          that.updateLinks()
-          that.initVariables()
-          that.getOption()
-        }, 2000);
     }
   },
   end:function(e){
     var that=this
     this.setData({
       raw:[],
-      byDay:"Enter Day",
-      byMonth:"Enter Month",
-      end:e.detail.value
+      byDay:"Pick Day",
+      byMonth:"Pick Month",
+      end:e.detail.value,
+      index:-1
     })
-    if(this.data.start=="Enter Start")
+    if(this.data.start=="Pick Start Date")
     {
     }
     else
@@ -281,46 +242,28 @@ Page({
       var local_end=end.getTime()/1000+end.getTimezoneOffset()*60
       var days=(local_end-local_start)/(3600*24)
       this.getList(db,_,0,days+1,local_start,local_end,this.getList)
-        setTimeout(function(){
-          that.updateLinks()
-          that.initVariables()
-          that.getOption()
-        }, 2000);
     }
-   
   },
-  getList:function(db,_,skip,count,start,end,callback){
+  getList:function(db,_,skip,count,start,end,callback,temp=[]){
     var that=this
     if(skip>count)
     {
+      that.setData({
+        raw:temp
+      })
+      that.updateLinks()
+      that.initVariables()
+      that.getOption()
       return
     }
-    return new Promise((resolve, reject) =>{
-      let statusList = []
-      let selectPromise
-      if(skip>0)
-      {
-        selectPromise = db.collection('app2pub').where({
-          time: _.and(_.gte(start), _.lt(end))
-        }).orderBy('time', 'asc').skip(skip).get()
-      }
-      else
-      {
-        selectPromise = db.collection('app2pub').where({
-          time: _.and(_.gte(start), _.lt(end))
-        }).orderBy('time', 'asc').get()
-      }
-      selectPromise.then(res => {
-        console.log(res.data)
-        that.setData({
-          raw:this.data.raw.concat(res.data)
-        })
-        callback(db,_,skip+20,count,start,end,callback);
+    db.collection('app2pub').where({
+      time: _.and(_.gte(start), _.lt(end))
+    }).orderBy('time', 'asc').skip(skip).get().then(res =>{
+      console.log(res.data)
+      callback(db,_,skip+20,count,start,end,callback,temp.concat(res.data));
       }).catch(e => {
         console.error(e)
-        reject("查询失败!")
       })
-    })
   },
   updateLinks:function(){
     var temp = []
@@ -328,7 +271,7 @@ Page({
     {
       for(var j in this.data.raw[i].value)
       {
-        if(i==1)
+        if(i==0)
         {
           temp[j]=this.data.raw[i].value[j].value
         }

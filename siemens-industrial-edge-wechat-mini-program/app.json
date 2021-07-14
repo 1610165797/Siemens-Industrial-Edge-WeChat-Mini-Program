@@ -17,29 +17,29 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/index/index",
-        "iconPath":"icon/_main.png",
-        "selectedIconPath": "icon/main.png",
-        "text": "Main"
-      },
-      {
         "pagePath": "pages/line/index",
-        "iconPath":"icon/_graph.png",
-        "selectedIconPath": "icon/graph.png",
-        "text": "Chart"
+        "iconPath":"icon/line.png",
+        "selectedIconPath": "icon/line_fill.png",
+        "text": "Line"
       },
       {
-        "pagePath": "pages/subscribe/subscribe",
-        "iconPath":"icon/_save.png",
-        "selectedIconPath": "icon/save.png",
-        "text": "Subscribe"
+        "pagePath": "pages/sankey/index",
+        "iconPath":"icon/sankey.png",
+        "selectedIconPath": "icon/sankey_fill.png",
+        "text": "Sankey"
+      },
+      {
+        "pagePath": "pages/gantt/index",
+        "iconPath":"icon/gantt.png",
+        "selectedIconPath": "icon/gantt_fill.png",
+        "text": "Gantt"
       },
    
       {
-        "pagePath": "pages/my/my",
-        "iconPath":"icon/_my.png",
-        "selectedIconPath": "icon/my.png",
-        "text": "Mine"
+        "pagePath": "pages/subscribe/subscribe",
+        "iconPath":"icon/subscribe.png",
+        "selectedIconPath": "icon/subscribe_fill.png",
+        "text": "Subcription"
       }
     ]
   },

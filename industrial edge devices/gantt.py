@@ -5,9 +5,9 @@ import time
 import random
 
 #variable initializations
-appid=''
-appsecret=''
-env=''
+appid='wx695e6e3500358a03'
+appsecret='eee49a96acc0968fd3dcc4c9ea433eaf'
+env='siemens-3g29njpzec51b925'
 tk=""
 c=0
 

@@ -5,9 +5,16 @@ Page({
   {
   },
   onLoad:function(options){
-    this.getOpenid()
+    wx.showLoading({
+      title: 'loading...',
+    })
+    this.getOpenid();
   },
   onPullDownRefresh: function (){
+    this.onLoad();
+    wx.stopPullDownRefresh({
+      success: (res) => {},
+    })
   },
   getOpenid(){
     var that=this
@@ -18,7 +25,7 @@ Page({
       that.setData({
         openid:res.result.openid
       })
-      this.initVariables();
+      this.fetchData();
     }).catch(res=>{
       console.log("Oops",res)
     })
@@ -56,33 +63,6 @@ Page({
       }
     })
   }
-  },
-  initVariables:function(){
-    var that=this
-      db.collection('subscribers').where({
-        openid:this.data.openid
-      }).get().then(res=>{
-        console.log(res)
-        if(res.data.length==1)
-        {
-          that.setData({
-            subscribed:res.data[0].pending
-          })
-          console.log(res)
-        }
-        else
-        {
-          db.collection('subscribers').add({
-            data:{
-              openid:this.data.openid,
-              pending:false
-            },
-            success:function(res){
-              console.log(res)
-            }
-          })
-        }
-      })
   },
   uploadOpenid:function(openid){
     db.collection('subscribers').where({
@@ -123,6 +103,85 @@ Page({
           }
         })
       }
+    })
+  },
+  toggle:function(e){
+    var that=this
+    if(e.detail.value.length>this.data.trues)
+    {
+      wx.requestSubscribeMessage({
+      tmplIds: ["I_2lT2DRyjtJ1EjeM5SN81bd3DBMV2EHdpHutsrPrps"],
+      mask:true,
+      success(res){
+        if(res.I_2lT2DRyjtJ1EjeM5SN81bd3DBMV2EHdpHutsrPrps=="accept")
+        {
+          wx.showLoading({
+            title: 'subscribing...',
+            mask:true
+          })
+          that.updateDatabase(e)
+        }
+        else
+        {
+          that.fetchData()
+        }
+        console.log("success",res)
+      }
+    })
+  }
+  else
+  {
+    this.updateDatabase(e);
+  }
+   
+  },
+  updateDatabase:function(e){
+    var temp=this.data.list
+    for(var i in temp)
+    {
+      if(e.detail.value.includes(temp[i].name))
+      {
+        temp[i].state=true
+      }
+      else
+      {
+        temp[i].state=false
+      }
+    }
+    db.collection('users').where({
+      _openid:this.data.openid
+    }).update({
+      data:{
+        sub:temp
+      }
+    }).then(res=>{
+      this.fetchData();
+      console.log(res);
+    })
+  },
+
+  fetchData:function(){
+    db.collection('users').where({
+      _openid:this.data.openid
+    }).get().then(res=>{
+      console.log(res.data[0].sub)
+      this.setData({
+        list:res.data[0].sub
+      })
+      var count=0
+      for(var i in this.data.list)
+      {
+        if(this.data.list[i].state==true)
+        {
+          count++
+        }
+      }
+      this.setData({
+        trues:count
+      })
+      wx.hideLoading({
+        success: (res) => {},
+      })
     })
   }
 })

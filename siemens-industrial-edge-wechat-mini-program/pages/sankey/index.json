@@ -2,7 +2,7 @@
   "usingComponents": {
     "ec-canvas": "../../ec-canvas/ec-canvas"
   },
-  "navigationBarTitleText": "Chart",
+  "navigationBarTitleText": "Sankey Chart",
   "navigationBarTextStyle":"black",
   "enablePullDownRefresh": true,
   "disableSwipeBack": true

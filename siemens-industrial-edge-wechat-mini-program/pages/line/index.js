@@ -76,6 +76,22 @@ decrease_minute:function()
   })
   this.fetchData()
 },
+increase_ten_minute:function()
+{
+  this.setData({
+    start:this.data.start+60000000000*10,
+    end:this.data.end+60000000000*10,
+  })
+  this.fetchData()
+},
+decrease_ten_minute:function()
+{
+  this.setData({
+    start:this.data.start-60000000000*10,
+    end:this.data.end-60000000000*10,
+  })
+  this.fetchData()
+},
 bindPickerChange: function(e) {
   console.log('picker发送选择改变，携带值为', e.detail.value)
   this.setData({
@@ -201,7 +217,7 @@ getListIndexSkip:function(db,_,skip,count,callback) {
 line_set:function(chart, xdata, ydata) {
   var option = {
     title: {
-        text: 'Acc-T Graph'
+        text:'Acceleration-Time Chart'
     },
     animation:false,
     tooltip: {

@@ -1,7 +1,8 @@
 // index.js
 // 获取应用实例
+const db = wx.cloud.database("siemens-3g29njpzec51b925")
+const _=db.command
 const app = getApp()
-
 Page({
   data: {
     motto: 'Welcome',
@@ -9,40 +10,134 @@ Page({
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     canIUseGetUserProfile: false,
-    canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
+    canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName'), // 如需尝试获取用户信息可改为false
+    list:[
+      {
+        name:"Fire Alarm",
+        state:false
+      },
+      {
+       name: "Production Suspension",
+       state:false
+      },
+      {
+       name: "Security Breach",
+       state:false
+      },
+      {
+       name: "High Friction",
+       state:false
+      },
+      {
+       name: "Low Engine Oil",
+       state:false
+      },
+      {
+       name: "High Humidity",
+       state:false
+      },
+      {
+       name: "Anamolous Vibration",
+       state:false
+      },
+      {
+        name: "Low Thrust",
+        state:false
+      },
+      {
+       name: "Low Battery",
+       state:false
+      },
+      {
+        name: "Temperature High",
+        state:false
+       }
+     ]
   },
-  // 事件处理函数
-  bindViewTap() {
-    wx.navigateTo({
-      url: '../logs/logs'
+  bindViewTap(){
+    this.getUserProfile();
+  },
+  getUserProfile:function(){
+    wx.getUserProfile({
+      desc:'Get User Info',
+      success:res=>{
+        wx.showLoading({
+          title: 'signing in...',
+        })
+        var temp=JSON.parse(res.rawData)
+        temp["sub"]=this.data.list
+        this.setData({
+          userInfo:temp
+        })
+        this.uploadUser()
+      }
+    });
+  },
+  getOpenid(){
+    var that=this
+    wx.cloud.callFunction({
+      name:"getopenid"
+    }).then(res=>{
+      console.log("Yeah",res)
+      that.setData({
+        openid:res.result.openid
+      })
+      that.checkExist()
+    }).catch(res=>{
+      console.log("Oops",res)
     })
   },
-  onLoad() {
-    if (wx.getUserProfile) {
-      this.setData({
-        canIUseGetUserProfile: true
-      })
-    }
-  },
-  getUserProfile(e) {
-    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    wx.getUserProfile({
-      desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-      success: (res) => {
+  uploadUser:function(){
+    db.collection('users').add({
+      data:this.data.userInfo
+    }).then(res=>{
         console.log(res)
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
+        wx.hideLoading({
+          success: (res) => {
+            wx.switchTab({
+              url: '../line/index',
+            })
+          },
+        })
+       
+    })
+  },
+  onLoad(){
+    wx.showLoading({
+      title: 'loading...',
+    })
+    this.getOpenid()
+  },
+  checkExist:function(){
+    var that=this
+    db.collection('users').where({
+      _openid:this.data.openid,
+    }).count().then(res=>{
+      console.log(res)
+      if(res.total==0)
+      {
+        wx.hideLoading({
+          success: (res) => {
+
+          },
         })
       }
-    })
-  },
-  getUserInfo(e) {
-    // 不推荐使用getUserInfo获取用户信息，预计自2021年4月13日起，getUserInfo将不再弹出弹窗，并直接返回匿名的用户个人信息
-    console.log(e)
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
+      else if(res.total==1)
+      {
+        wx.showLoading({
+          title: "signing in...",
+        })
+        setTimeout(function(){
+          wx.hideLoading({
+            success: (res) => {
+              wx.switchTab({
+                url: '../line/index',
+              })
+            },
+          })
+      },2000)
+      
+      }
     })
   }
 })

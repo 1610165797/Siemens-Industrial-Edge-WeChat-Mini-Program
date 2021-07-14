@@ -37,24 +37,25 @@ Page({
   var option={
     title:
       {
-          text: "Gantt Chart"
+          text: "Project Management Chart"
       },
       legend: {
           data: ['Actual',"Scheduled",""],
-          x:200
+          x:200,
+          y:30
       },
       grid:{
-        top: '10%',
-        left: '2%',
-        right: '2%',
-        bottom: '15%',
+        top:'15%',
+        left:'2%',
+        right:'2%',
+        bottom:'15%',
         containLabel: true
       },
       xAxis: {
         type: 'time',
         position: "top",
         axisLabel: {
-          show: false,
+          show: true,
            textStyle:{
              color: '#000000',
              fontSize : 15
@@ -108,7 +109,7 @@ Page({
             name: 'Scheduled',
             type: 'bar',
             stack: 'overlapp',
-            barGap:'-40%',
+            barGap:'-50%',
             data:[
                 new Date("2021/07/31"),
                 new Date("2021/07/25"),

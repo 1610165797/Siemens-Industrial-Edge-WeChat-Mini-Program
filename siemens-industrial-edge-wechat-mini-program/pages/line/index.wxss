@@ -1,11 +1,10 @@
-/**index.wxss**/
 .page{
   overflow-x:hidden;
 }
 #lazy-mychart-dom {
   position: absolute;
   top: 0;
-  bottom: 60%;
+  bottom: 50%;
   left: 0;
   right: 0;
 }
@@ -13,7 +12,8 @@
   border-radius: 20rpx;
   text-align: center;
   border:10rpx solid #009999;
-  width:500rpx
+  width:500rpx;
+  margin-left:10rpx
 }
 .values{
   margin-top: 120rpx;
@@ -21,6 +21,7 @@
   width:750rpx
 }
 .values_button{
+  margin-top:140rpx;
   display: flex;
   flex-direction: row;
   height:350rpx
@@ -38,25 +39,11 @@
 }
 .confirm{
   margin-top:120rpx;
-  margin-right:30rpx
+  margin-right:50rpx
 }
 
 .bts{
   margin-top:20rpx;
-  display: flex;
-  flex-direction: row;
-}
-
-.picker_border{
-  margin-top:rpx;
-  margin-left:40rpx;
-  border-radius: 20rpx;
-  text-align: center;
-  border:10rpx solid #009999;
-  width:300rpx;
-}
-.picker{
-  margin-top: 20rpx;
   display: flex;
   flex-direction: row;
 }

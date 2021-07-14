@@ -1,4 +1,3 @@
-<!--pages/gantt/index.wxml-->
 <view>
   <view class="container">
       <ec-canvas id="lazy-mychart-dom" canvas-id="lazy-mychart" ec="{{ lazyEc }}" force-use-old-canvas="true"> </ec-canvas> <!-- 最后一项在发布时去掉  -->
