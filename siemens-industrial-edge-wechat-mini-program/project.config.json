@@ -31,7 +31,7 @@
     "minifyWXSS": true
   },
   "compileType": "miniprogram",
-  "libVersion": "2.17.0",
+  "libVersion": "2.18.0",
   "appid": "wx695e6e3500358a03",
   "projectname": "Siemens%20Industrial%20Edge%20WeChat%20Mini-Program",
   "debugOptions": {

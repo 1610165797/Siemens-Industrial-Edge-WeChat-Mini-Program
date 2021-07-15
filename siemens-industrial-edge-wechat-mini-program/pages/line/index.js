@@ -142,7 +142,6 @@ this.lazyComponent.init((canvas,width,height,dpr)=>{
     return chart
 })
 },
-
 fetchData:function(){
   wx.showLoading({
     title: 'loading...',

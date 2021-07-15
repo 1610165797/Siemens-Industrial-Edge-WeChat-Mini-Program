@@ -8,7 +8,6 @@ from datetime import date
 from datetime import timezone 
 import pytz
 
-
 count=0
 dt=[]
 frequency=10
@@ -82,6 +81,7 @@ if __name__ == '__main__':
             "target": "Loss",
             "value": 1
         }]
+
 
     start=date.today()
     t=int (datetime(2021,6,20,0,0).timestamp())

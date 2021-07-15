@@ -3,6 +3,7 @@ const _=db.command
 Page({
   data:
   {
+    override:false
   },
   onLoad:function(options){
     wx.showLoading({
@@ -107,6 +108,18 @@ Page({
   },
   toggle:function(e){
     var that=this
+    if(this.data.override)
+    {
+      this.setData({
+        override:false
+      })
+      wx.openSetting({
+        withSubscriptions:true,
+      })
+      this.fetchData()
+    }
+    else
+    {
     if(e.detail.value.length>this.data.trues)
     {
       wx.requestSubscribeMessage({
@@ -123,16 +136,30 @@ Page({
         }
         else
         {
+          that.setData({
+            override:true
+          })
           that.fetchData()
         }
-        console.log("success",res)
+      },
+      fail(res){
+        wx.showLoading({
+          title: 'canceled...',
+          mask:true
+        })
+        that.fetchData()
       }
     })
   }
   else
   {
+    wx.showLoading({
+      title: 'unsubscribing...',
+      mask:true
+    })
     this.updateDatabase(e);
   }
+}
    
   },
   updateDatabase:function(e){
@@ -159,7 +186,6 @@ Page({
       console.log(res);
     })
   },
-
   fetchData:function(){
     db.collection('users').where({
       _openid:this.data.openid

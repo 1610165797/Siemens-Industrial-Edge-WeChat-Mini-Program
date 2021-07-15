@@ -41,7 +41,7 @@ Page({
       },
       legend: {
           data: ['Actual',"Scheduled",""],
-          x:200,
+          x:10,
           y:30
       },
       grid:{
