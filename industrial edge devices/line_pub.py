@@ -12,6 +12,7 @@ frequency=10
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to server (i.e., broker) with result code "+str(rc))
+
     client.subscribe("app1sub")
     client.message_callback_add("app1sub",custom_callback_app1sub)
 
@@ -20,11 +21,9 @@ def on_message(client, userdata, msg):
 
 def custom_callback_app1sub(client, userdata, msg):
     data=str(msg.payload, "utf-8")
-    print("custom_callback_app1pub: " + msg.topic)
+    print("custom_callback_app1sub: " + msg.topic)
     if(data=="True"):
         global dt
-        while(dt=={}):
-            pass
         display=json.dumps(dt)
         client.publish("app1pub",display)
         print(dt)
@@ -37,6 +36,7 @@ if __name__ == '__main__':
     client.connect(host="localhost", port=1883, keepalive=60)
     client.loop_start()
 
+    client.publish("app1pub",str({}))
     while True:
         imp = signal.unit_impulse(10, int(random.uniform(0,9)))
         b, a = signal.butter(2, random.uniform(0,1))

@@ -148,6 +148,7 @@ def databaseAdd(dt):
 		data = response.json()
 		display=json.dumps(data)
 		print(display)
+		client.publish("app1sub","True")
 		return display
 	else:
 		print('error: got response code %d' % response.status_code)
@@ -174,9 +175,9 @@ def databaseUpdate(dt):
 
 #on connect callback
 def on_connect(client, userdata, flags, rc):
-    print("Connected to server (i.e., broker) with result code "+str(rc))
-    client.subscribe("app1pub")
-    client.message_callback_add("app1pub",custom_callback_app1pub)
+	print("Connected to server (i.e., broker) with result code "+str(rc))
+	client.subscribe("app1pub")
+	client.message_callback_add("app1pub",custom_callback_app1pub)
 
 def on_message(client, userdata, msg):
     print("on_message: " + msg.topic + " " + str(msg.payload, "utf-8"))
@@ -184,11 +185,8 @@ def on_message(client, userdata, msg):
 def custom_callback_app1pub(client, userdata, msg):
 	data=str(msg.payload,"utf-8")
 	print("custom_callback_app1pub: " + msg.topic)
-	time.sleep(10)
-	databaseAdd(str({}))
-	databaseAdd(data)
-	client.publish("app1sub","True")
-
+	if data!={}:
+		databaseAdd(data)	
 
 #main
 if __name__ == '__main__':
@@ -197,12 +195,11 @@ if __name__ == '__main__':
 	client.on_connect = on_connect
 	client.connect(host="localhost", port=1883, keepalive=60)
 	client.loop_start()
-	count=99999
+	count=9999
 
-	client.publish("app1sub","True")
 	while(True):
-		if(count)>1440:
+		if(count>1440):
 			count=0
 			get_access_token()
-		count+=5
+		count+=1
 		time.sleep(5)
