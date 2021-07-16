@@ -118,7 +118,6 @@ Page({
       {
         wx.hideLoading({
           success: (res) => {
-
           },
         })
       }
@@ -136,7 +135,24 @@ Page({
             },
           })
       },2000)
-      
+      }
+      else
+      {
+        wx.showLoading({
+          title: "signing in...",
+        })
+        db.collection("users").where({_openid:this.data.openid}).limit(res.total-1).remove().then(res=>{
+          setTimeout(function(){
+            wx.hideLoading({
+              success: (res) => {
+                wx.switchTab({
+                  url: '../line/index',
+                })
+              },
+            })
+          },2000)
+        })
+    
       }
     })
   }
