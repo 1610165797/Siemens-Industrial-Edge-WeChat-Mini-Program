@@ -7,9 +7,8 @@ appid='wx695e6e3500358a03'
 appsecret='eee49a96acc0968fd3dcc4c9ea433eaf'
 env='siemens-3g29njpzec51b925'
 tk=""
+
 count=0
-
-
 message_lib={
 "Fire Alarm":{
         "thing1":{
@@ -124,19 +123,39 @@ message_lib={
 }
 
 
-def getOpenid():
+def getUserCount():
     global tk
     if tk=="":
-            return None
+        return None
     params={
     "env":env,
-    "query": "db.collection(\"users\").get()",
+    "query": "db.collection(\"users\").count()",
+    }
+    url="https://api.weixin.qq.com/tcb/databasecount?access_token={}".format(tk)
+    response = requests.post(url,{},params)
+    if response.status_code == 200:
+        data = response.json()
+        getOpenid(0,data["count"])
+        return data
+    else:
+        print('error: got response code %d' % response.status_code)
+        print(response.text)
+
+
+def getOpenid(skip,count):
+    global tk
+    if(skip>=count):
+        return
+    params={
+    "env":env,
+    "query": "db.collection(\"users\").skip({}).get()".format(skip)
     }
     url="https://api.weixin.qq.com/tcb/databasequery?access_token={}".format(tk)
     response = requests.post(url,{},params)
     if response.status_code == 200:
         data = response.json()
         display=json.dumps(data)
+        print(len(data["data"]))
         for i in data["data"]:
             re=json.loads(i)
             id=re["_openid"]
@@ -144,6 +163,7 @@ def getOpenid():
                 if(j["state"]==True):
                     topic=j["name"]
                     sendSubscribeMessage(id,topic)
+        getOpenid(skip+10,count)
         return display
     else:
         print('error: got response code %d' % response.status_code)
@@ -159,7 +179,7 @@ def sendSubscribeMessage(dt,topic):
     "template_id":"I_2lT2DRyjtJ1EjeM5SN81bd3DBMV2EHdpHutsrPrps",
     "touser":dt,
     "page":"pages/subscribe/subscribe",
-    "miniprogram_state":"trial",
+    "miniprogram_state":"formal",
     "lang":"en_US",
     "data":message_lib[topic]
     }
@@ -189,19 +209,16 @@ def custom_callback_access_token(client, userdata, msg):
 	global tk
 	tk=data
 
-
-
-
 if __name__ == '__main__':
-	client = mqtt.Client()
-	client.on_message = on_message
-	client.on_connect = on_connect
-	client.connect(host="localhost", port=1883, keepalive=60)
-	client.loop_start()
-	count=0
+    client = mqtt.Client()
+    client.on_message = on_message
+    client.on_connect = on_connect
+    client.connect(host="localhost", port=1883, keepalive=60)
+    client.loop_start()
+    count=0
 
-	while(True):
-		count+=5
-		time.sleep(10)
-		if((count%5)==0):
-			getOpenid()
+    while(True):
+        count+=1
+        print(count)
+        time.sleep(10)
+        getUserCount()

@@ -80,11 +80,23 @@ if __name__ == '__main__':
             "source": "Civil",
             "target": "Loss",
             "value": 1
+        },{
+            "source": "Nuclear",
+            "target": "Lighting",
+            "value": 4
+        },{
+            "source": "Lighting",
+            "target": "Heat",
+            "value": 2
+        },{
+            "source": "Wind",
+            "target": "Heat",
+            "value": 3
         }]
 
 
     start=date.today()
-    t=int (datetime(2021,6,20,0,0).timestamp())
+    t=int (datetime(2021,7,15,0,0).timestamp())
     while True:
         t=t+3600*24
         print(list)
