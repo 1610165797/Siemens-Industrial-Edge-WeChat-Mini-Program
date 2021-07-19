@@ -8,6 +8,7 @@ Page({
   onLoad:function(options){
     wx.showLoading({
       title: 'loading...',
+      mask:true
     })
     this.getOpenid();
   },

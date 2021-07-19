@@ -130,6 +130,7 @@ Page({
       },
       series: [
           { animation:false,
+            nodeAlign: 'right',
             draggable:false,
             top:"6%",
             left:"2%",
