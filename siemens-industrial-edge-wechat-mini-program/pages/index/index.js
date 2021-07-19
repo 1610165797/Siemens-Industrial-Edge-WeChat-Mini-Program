@@ -63,6 +63,7 @@ Page({
       success:res=>{
         wx.showLoading({
           title: 'signing in...',
+          mask:true
         })
         var temp=JSON.parse(res.rawData)
         temp["sub"]=this.data.list
@@ -105,6 +106,7 @@ Page({
   onLoad(){
     wx.showLoading({
       title: 'loading...',
+      mask:true
     })
     this.getOpenid()
   },
@@ -125,6 +127,7 @@ Page({
       {
         wx.showLoading({
           title: "signing in...",
+          mask:true
         })
         setTimeout(function(){
           wx.hideLoading({
@@ -140,6 +143,7 @@ Page({
       {
         wx.showLoading({
           title: "signing in...",
+          mask:true
         })
         db.collection("users").where({_openid:this.data.openid}).limit(res.total-1).remove().then(res=>{
           setTimeout(function(){
