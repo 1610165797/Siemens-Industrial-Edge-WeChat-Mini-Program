@@ -19,8 +19,9 @@
   color: #aaa;
 }
 
-.btn{
-  margin-top:250rpx
+.bts{
+  display:flex;
+  flex-direction:row;
 }
 
 .container{

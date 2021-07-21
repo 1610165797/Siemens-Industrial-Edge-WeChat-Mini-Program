@@ -12,6 +12,12 @@ Page({
     })
     this.getOpenid();
   },
+  onShow:function(options){
+    this.onLoad();
+  },
+  checkLogin:function(){
+    db.collection
+  },
   onPullDownRefresh: function (){
     this.onLoad();
     wx.stopPullDownRefresh({
@@ -191,6 +197,23 @@ Page({
     db.collection('users').where({
       _openid:this.data.openid
     }).get().then(res=>{
+      console.log(res)
+      if(res.data.length==0)
+      {
+        wx.showLoading({
+          title: 'please login...',
+          mask:true
+        })
+        setTimeout((res) => {
+          wx.hideLoading({
+            success: (res) =>{
+              wx.navigateTo({
+                url: '../index/index',
+              })
+            },
+          })
+        }, 1000);
+      }
       console.log(res.data[0].sub)
       this.setData({
         list:res.data[0].sub

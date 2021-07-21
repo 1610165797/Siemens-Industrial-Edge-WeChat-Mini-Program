@@ -20,6 +20,14 @@
   <view class="usermotto">
     <text class="user-motto"></text>
   </view>
+
+  <view class="usermotto">
+    <text class="user-motto"></text>
+  </view>
+  <view class="bts">
+    <button class="login" style="width:300rpx;margin-right:20rpx"  type="primary" bindtap="getUserProfile">Login</button>
+    <button class="skip" style="width:300rpx;margin-left:20rpx" type="default" bindtap="skip">Skip</button>
+  </view>
 </view>
 
 

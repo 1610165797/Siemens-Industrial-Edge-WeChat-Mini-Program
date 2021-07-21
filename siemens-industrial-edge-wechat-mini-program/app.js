@@ -4,5 +4,8 @@ App({
     wx.cloud.init({
       env: 'siemens-3g29njpzec51b925'
     })
+  },
+  globalData:{
+    login:false
   }
 })

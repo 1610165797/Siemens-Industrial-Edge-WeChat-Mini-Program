@@ -59,7 +59,7 @@ Page({
   },
   getUserProfile:function(){
     wx.getUserProfile({
-      desc:'Get User Info',
+      desc:'Get User Profile',
       success:res=>{
         wx.showLoading({
           title: 'signing in...',
@@ -109,6 +109,11 @@ Page({
       mask:true
     })
     this.getOpenid()
+  },
+  skip:function(){
+    wx.switchTab({
+      url: '../line/index',
+    })
   },
   checkExist:function(){
     var that=this
