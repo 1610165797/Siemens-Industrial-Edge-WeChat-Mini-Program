@@ -1,4 +1,6 @@
 import * as echarts from '../../ec-canvas/echarts'
+const db = wx.cloud.database("siemens-3g29njpzec51b925")
+const _=db.command
 Page({
 data:{
   lazyEc:{
@@ -19,10 +21,10 @@ data:{
 },
 onLoad:function(options)
 {
-  var d=Date.now()*1000000
+  var d=(Date.now()/1000).toFixed(0)
   this.setData({
-    start:d-120000000000,
-    end:d-60000000000
+    start:d-120,
+    end:d-60
   })
   this.fetchData()
   var that=this
@@ -30,10 +32,10 @@ onLoad:function(options)
 onReady:function(){
 },
 onPullDownRefresh:function(){
-  var d=Date.now()*1000000
+  var d=Date.now()/1000
   this.setData({
-    start:d-120000000000,
-    end:d-60000000000
+    start:d-120,
+    end:d-60
   })
   this.fetchData();
   setTimeout(function(){
@@ -60,35 +62,37 @@ confirm:function()
   })
   this.fetchData()
 },
-increase_minute:function()
+next:function()
 {
+  var temp=this.data.end+(this.data.end-this.data.start)
   this.setData({
-    start:this.data.start+60000000000,
-    end:this.data.end+60000000000,
+    start:this.data.end,
+    end:temp,
   })
   this.fetchData()
 },
-decrease_minute:function()
+prev:function()
 {
+  var temp=this.data.start-(this.data.end-this.data.start)
   this.setData({
-    start:this.data.start-60000000000,
-    end:this.data.end-60000000000,
+    start:temp,
+    end:this.data.start,
   })
   this.fetchData()
 },
 increase_ten_minute:function()
 {
   this.setData({
-    start:this.data.start+60000000000*10,
-    end:this.data.end+60000000000*10,
+    start:this.data.start+60*10,
+    end:this.data.end+60*10,
   })
   this.fetchData()
 },
 decrease_ten_minute:function()
 {
   this.setData({
-    start:this.data.start-60000000000*10,
-    end:this.data.end-60000000000*10,
+    start:this.data.start-60*10,
+    end:this.data.end-60*10,
   })
   this.fetchData()
 },
@@ -148,28 +152,25 @@ fetchData:function(){
     mask:true
   })
   var that=this
-  const db = wx.cloud.database("siemens-3g29njpzec51b925")
-  const _=db.command
   this.setData({
     list:[]
   })
-  this.getListCount(db,_).then(res =>{
+  this.getListCount(db,_).then(res=>{
     let count = res
     let extract={}
     console.log(res)
     that.setData({
       counter:count,
-      real_frq:(count/(this.data.end-this.data.start)*1000000000).toFixed(3)
+      real_frq:(count/(this.data.end-this.data.start)).toFixed(3)
     })
       that.getListIndexSkip(db,_,0,count,that.getListIndexSkip);
-    
   })
 },
 getListCount:function(db,_){
   var that=this
   return new Promise((resolve, reject) => {
     db.collection('app1pub').where({
-      time: _.and(_.gt(that.data.start), _.lt(that.data.end))
+      time: _.and(_.gt(that.data.start*1000000000), _.lt(that.data.end*1000000000))
     }).orderBy('time', 'asc').count().then(res => {
       resolve(res.total);
       console.log(res)
@@ -179,26 +180,28 @@ getListCount:function(db,_){
     })
   })
 },
-getListIndexSkip:function(db,_,skip,count,callback) {
+getListIndexSkip:function(db,_,skip,count,callback){
   var that=this
   if(skip>count)
   {
-    that.getOption();
-    return
+      that.getOption()
+      return
   }
-  return new Promise((resolve, reject) => {
+  else
+  {
+    return new Promise((resolve, reject) => {
     let statusList = []
     let selectPromise;	
-    if (skip > 0) 
+    if (skip > 0)
     {
       selectPromise = db.collection('app1pub').where({
-        time: _.and(_.gt(that.data.start), _.lt(that.data.end))
+        time: _.and(_.gt(that.data.start*1000000000), _.lt(that.data.end*1000000000))
       }).orderBy('time', 'asc').skip(skip).get()
     } 
     else 
     {
       selectPromise = db.collection('app1pub').where({
-        time: _.and(_.gt(that.data.start), _.lt(that.data.end))
+        time: _.and(_.gt(that.data.start*1000000000), _.lt(that.data.end*1000000000))
       }).orderBy('time', 'asc').get()
     }
     selectPromise.then(res => {
@@ -207,36 +210,37 @@ getListIndexSkip:function(db,_,skip,count,callback) {
         list:this.data.list.concat(res.data)
       })
       callback(db,_,skip+20,count,callback);
-    }).catch(e => {
+    }).catch(e =>{
       console.error(e)
       reject("查询失败!")
     })
   })
+}
 },
 line_set:function(chart, xdata, ydata) {
   var option = {
     title: {
-        text:'Acceleration-Time Chart'
+      text:'Acceleration-Time Chart'
     },
     animation:false,
     tooltip: {
         trigger: 'axis'
     },
-    grid: {
+    grid:{
       left: '2%',
       right: '5%',
       bottom: '1%',
       containLabel: true  
     },
     toolbox: {
-        feature: {
-            saveAsImage: {}
-        }
     },
     xAxis: {
       name:'s',
       nameTextStyle:{
         padding:[0,0,0,-5]
+      },
+      axisLabel: {
+        show: false
       },
         type: 'category',
         boundaryGap: false,

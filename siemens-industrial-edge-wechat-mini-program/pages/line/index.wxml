@@ -8,11 +8,11 @@
   <view class='values'>
     <view class="value">
       <text class="texts" selectable="{{true}}">Start: <text user-select="true">{{start}}</text>\n</text>
-      <input class="input" type="number" bindinput='getStartTime' maxlength="19" placeholder="Enter Start Time" />
+      <input class="input" type="number" bindinput='getStartTime' maxlength="19" placeholder="Enter Start Time (s)" />
     </view>
     <view class="value">
       <text class="texts" selectable="{{true}}">End: <text user-select="true">{{end}}</text>\n</text>
-      <input class="input" type="number" bindinput='getEndTime' maxlength="19" placeholder="Enter End Time" />
+      <input class="input" type="number" bindinput='getEndTime' maxlength="19" placeholder="Enter End Time (s)" />
     </view>
   </view>
   
@@ -22,18 +22,18 @@
   </view>
 
   <view class="description">
-    <text class="texts">Time Frame: {{(end-start)/1000000000}} s\n</text>
+    <text class="texts">Time Frame: {{(end-start)}} s\n</text>
     <text class="texts">Data Points: {{counter}}\n</text>
     <text class="texts">Ideal Sampling Frequency: {{ideal_frq}} Hz\n</text>
     <text class="texts">Actual Sampling Frequency: {{real_frq}} Hz </text>
   </view>
 
   <view class="bts">
-      <button type="primary" bindtap="decrease_minute">-1 min</button>
-      <button type="primary" bindtap="increase_minute">+1 min</button>
+      <button type="primary" style="width:300rpx;margin-right:20rpx" bindtap="prev">Prev</button>
+      <button type="primary" style="width:300rpx;margin-left:20rpx" bindtap="next">Next</button>
   </view>
   <view class="bts">
-      <button type="primary" bindtap="decrease_ten_minute">-10 min</button>
-      <button type="primary" bindtap="increase_ten_minute">+10 min</button>
+      <button type="primary" style="width:300rpx;margin-right:20rpx" bindtap="decrease_ten_minute">-10 min</button>
+      <button type="primary" style="width:300rpx;margin-left:20rpx" bindtap="increase_ten_minute">+10 min</button>
   </view>
 </view>
