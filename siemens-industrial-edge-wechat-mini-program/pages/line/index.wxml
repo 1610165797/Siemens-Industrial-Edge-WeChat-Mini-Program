@@ -1,18 +1,18 @@
-<view class="page" wx:if="{{true}}">
-
+<wxs module="filters" src="../../utils/tool.wxs"></wxs>
+<view class="page">
   <view class="container">
-    <ec-canvas id="lazy-mychart-dom" canvas-id="lazy-mychart" ec="{{ lazyEc }}" force-use-old-canvas="true"> </ec-canvas> <!-- 最后一项在发布时去掉  -->
+    <ec-canvas wx:if="{{loaded}}" id="lazy-mychart-dom" canvas-id="lazy-mychart" ec="{{ lazyEc }}" force-use-old-canvas="true"> </ec-canvas> <!-- 最后一项在发布时去掉  -->
+    <progress wx:else id="lazy-mychart-dom" border-radius="30rpx" style="padding:20rpx" show-info="true" percent="{{filters.toFix(list.length*100/counter)}}" stroke-width="6"/>
   </view>
-
   <view class="values_button">
   <view class='values'>
     <view class="value">
       <text class="texts" selectable="{{true}}">Start: <text user-select="true">{{start}}</text>\n</text>
-      <input class="input" type="number" bindinput='getStartTime' maxlength="19" placeholder="Enter Start Time (s)" />
+      <input class="input" type="number" bindinput='getStartTime' maxlength="10" placeholder="Enter Start Time (s)" />
     </view>
     <view class="value">
       <text class="texts" selectable="{{true}}">End: <text user-select="true">{{end}}</text>\n</text>
-      <input class="input" type="number" bindinput='getEndTime' maxlength="19" placeholder="Enter End Time (s)" />
+      <input class="input" type="number" bindinput='getEndTime' maxlength="10" placeholder="Enter End Time (s)" />
     </view>
   </view>
   

@@ -17,7 +17,8 @@ data:{
   array:["Sankey Chart","Gantt Chart",],
   index:-1,
   vx:[],
-  vy:[]
+  vy:[],
+  loaded:false
 },
 onLoad:function(options)
 {
@@ -35,7 +36,8 @@ onPullDownRefresh:function(){
   var d=Date.now()/1000
   this.setData({
     start:d-120,
-    end:d-60
+    end:d-60,
+    loaded:false
   })
   this.fetchData();
   setTimeout(function(){
@@ -58,7 +60,8 @@ confirm:function()
 {
   this.setData({
     start:parseInt(this.data.temp_start),
-    end:parseInt(this.data.temp_end)
+    end:parseInt(this.data.temp_end),
+    loaded:false
   })
   this.fetchData()
 },
@@ -68,6 +71,7 @@ next:function()
   this.setData({
     start:this.data.end,
     end:temp,
+    loaded:false
   })
   this.fetchData()
 },
@@ -77,6 +81,7 @@ prev:function()
   this.setData({
     start:temp,
     end:this.data.start,
+    loaded:false
   })
   this.fetchData()
 },
@@ -85,6 +90,7 @@ increase_ten_minute:function()
   this.setData({
     start:this.data.start+60*10,
     end:this.data.end+60*10,
+    loaded:false 
   })
   this.fetchData()
 },
@@ -93,6 +99,7 @@ decrease_ten_minute:function()
   this.setData({
     start:this.data.start-60*10,
     end:this.data.end-60*10,
+    loaded:false
   })
   this.fetchData()
 },
@@ -134,6 +141,9 @@ getOption:function(){
 },
 init_chart:function(xdata,ydata){
   var that=this
+  this.setData({
+    loaded:true
+  })
 this.lazyComponent=this.selectComponent("#lazy-mychart-dom")
 this.lazyComponent.init((canvas,width,height,dpr)=>{
     const chart=echarts.init(canvas,null,{

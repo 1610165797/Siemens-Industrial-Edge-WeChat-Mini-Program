@@ -35,8 +35,8 @@ if __name__ == '__main__':
     client.on_connect = on_connect
     client.connect(host="localhost", port=1883, keepalive=60)
     client.loop_start()
-
     client.publish("app1pub",str({}))
+
     while True:
         imp = signal.unit_impulse(10, int(random.uniform(0,9)))
         b, a = signal.butter(2, random.uniform(0,1))

@@ -5,13 +5,13 @@
 
   <view class="byDayAndMonth">
     <view class="picker">
-        <picker bindchange="byDay" value="{{byDay}}" mode="date" start="2021-01-01" end="2121-12-31">
+        <picker bindchange="byDay" value="{{byDay}}" mode="date" start="2021-07-01" end="2121-12-31">
         <view>{{byDay}}</view>
         </picker>
     </view>
 
     <view class="picker">
-        <picker bindchange="byMonth" value="{{byMonth}}" mode="date" fields="month" start="2021-01-01" end="2121-12-31">
+        <picker bindchange="byMonth" value="{{byMonth}}" mode="date" fields="month" start="2021-07-01" end="2121-12-31">
         <view>{{byMonth}}</view>
         </picker>
     </view>
@@ -19,9 +19,9 @@
   
   <view class="byDuration">
     <view class="picker">
-        <picker bindchange="start" value="{{start}}" mode="date" start="2021-01-01" end="{{end}}">
-          <view>{{start}}</view>
-        </picker>
+      <picker bindchange="start" value="{{start}}" mode="date" start="2021-07-01" end="{{end}}">
+        <view>{{start}}</view>
+      </picker>
     </view>
     <view class="picker">
         <picker bindchange="end" value="{{end}}" mode="date" start="{{start}}" end="2121-12-31">
